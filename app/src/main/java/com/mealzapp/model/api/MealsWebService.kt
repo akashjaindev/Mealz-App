@@ -1,14 +1,14 @@
 package com.mealzapp.model.api
 
 import com.mealzapp.model.response.MealCategoriesResponse
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import retrofit2.http.GET
 
 
 class MealsWebService {
-    private var api:MealApi
+    private var api: MealApi
+
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://www.themealdb.com/api/json/v1/1/")
@@ -22,7 +22,7 @@ class MealsWebService {
         return api.getMeals()
     }
 
-    interface MealApi{
+    interface MealApi {
         @GET("categories.php")
         suspend fun getMeals(): MealCategoriesResponse
     }
