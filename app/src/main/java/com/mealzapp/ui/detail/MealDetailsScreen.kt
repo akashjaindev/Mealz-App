@@ -7,6 +7,9 @@ import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
@@ -36,10 +39,12 @@ fun MealDetailScreen(meal: MealResponse?) {
 //    val imageSizeDp by transition.animateDp(targetValueByState={it.size}, label = "")
 //    val color  by transition.animateColor(targetValueByState={it.color}, label = "")
 //    val border  by transition.animateDp(targetValueByState={it.borderWidth}, label = "")
-    val scrollState = rememberScrollState()
-    val offset = min(1f,1-(scrollState.value/600f))
-    val size by animateDpAsState(targetValue =max(100.dp,200.dp * offset) )
-Surface(color = MaterialTheme.colors.background) {
+//    val scrollState = rememberScrollState()
+    val scrollState = rememberLazyListState()
+//    val offset = min(1f,1-(scrollState.value/600f))
+    val offset = min(1f,1-(scrollState.firstVisibleItemScrollOffset/600f + scrollState.firstVisibleItemIndex))
+    val size by animateDpAsState(targetValue = max(100.dp,140.dp * offset))
+    Surface(color = MaterialTheme.colors.background) {
     Column {
         Surface(elevation = 4.dp) {
             Row(modifier = Modifier.fillMaxWidth()) {
@@ -69,25 +74,13 @@ Surface(color = MaterialTheme.colors.background) {
                 )
             }
         }
-        Column(modifier = Modifier.verticalScroll(scrollState)) {
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-           Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
-            Text(text = "This is text element", modifier = Modifier.padding(32.dp))
+        val dummyContentList = (0..100).map {
+            it.toString()
+        }
+        LazyColumn(state = scrollState) {
+            items(dummyContentList){ dummyItem->
+            Text(text = dummyItem, modifier = Modifier.padding(24.dp).fillMaxWidth())
+            }
         }
 //        Button(modifier = Modifier.padding(16.dp),
 //            onClick = { profilePictureState= if(profilePictureState==MealProfilePictureState.Normal){
